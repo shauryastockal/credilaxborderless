@@ -31,7 +31,7 @@ export default function SendMoney() {
   };
 
   return (
-    <div className="p-4 space-y-5 max-w-2xl">
+    <div className="p-4 md:p-6 space-y-5 md:max-w-2xl">
       <h1 className="text-xl font-bold text-gray-900">Send Money</h1>
 
       {/* Tab */}

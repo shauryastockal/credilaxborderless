@@ -6,12 +6,15 @@ export default function Wealth() {
   const scorePct = (user.creditScore / user.creditScoreMax) * 100;
 
   return (
-    <div className="p-4 space-y-5 max-w-2xl">
+    <div className="p-4 md:p-6 space-y-5">
       <div>
         <h1 className="text-xl font-bold text-gray-900">Wealth</h1>
         <p className="text-xs text-gray-400">Grow while you study</p>
       </div>
 
+      <div className="md:grid md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 md:items-start">
+      {/* Left col */}
+      <div className="space-y-5">
       {/* US Credit Score */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-4">
@@ -72,6 +75,10 @@ export default function Wealth() {
         </div>
       </div>
 
+      </div>{/* end left col */}
+
+      {/* Right col */}
+      <div className="space-y-5">
       {/* Micro Investing */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-3">
@@ -157,6 +164,8 @@ export default function Wealth() {
           <p className="text-xs text-blue-500 mt-0.5">Earning {user.mcaInterestRate}% p.a. on your idle USD balance</p>
         </div>
       </div>
+      </div>{/* end right col */}
+      </div>{/* end grid */}
     </div>
   );
 }

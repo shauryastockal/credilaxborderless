@@ -1,0 +1,221 @@
+import { useState } from 'react';
+import { Snowflake, Eye, EyeOff, Settings, ChevronDown, ChevronUp, CreditCard, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { card, transactions } from '../data/dummy';
+import borderlessFavicon from '../assets/borderless_favicon.png';
+
+function TxIcon({ tx }) {
+  if (tx.icon === 'card') {
+    return (
+      <div className="w-9 h-9 bg-[#e8f0fe] rounded-xl flex items-center justify-center">
+        <CreditCard size={17} className="text-[#0062db]" />
+      </div>
+    );
+  }
+  if (tx.type === 'credit') {
+    return (
+      <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center">
+        <ArrowDownLeft size={17} className="text-green-500" />
+      </div>
+    );
+  }
+  return (
+    <div className="w-9 h-9 bg-red-50 rounded-xl flex items-center justify-center">
+      <ArrowUpRight size={17} className="text-red-400" />
+    </div>
+  );
+}
+
+export default function CardPage() {
+  const [frozen, setFrozen] = useState(card.frozen);
+  const [showNumber, setShowNumber] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [perTxLimit, setPerTxLimit] = useState(500);
+  const [dailyLimit, setDailyLimit] = useState(1000);
+  const [spendLimit, setSpendLimit] = useState(card.spendLimit);
+
+  const spentPct = Math.round((card.spentThisMonth / spendLimit) * 100);
+
+  return (
+    <div className="p-4 space-y-5 max-w-2xl">
+      <div>
+        <h1 className="text-xl font-bold text-gray-900">My Card</h1>
+      </div>
+
+      {/* Card Visual */}
+      <div className="relative">
+        <div
+          className={`rounded-3xl p-6 text-white transition-all duration-300 ${frozen ? 'opacity-70 grayscale' : ''}`}
+          style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', minHeight: 200 }}
+        >
+          {/* Card chip */}
+          <div className="flex justify-between items-start mb-8">
+            <div>
+              <p className="text-white/60 text-xs font-medium">borderless × credila</p>
+              <p className="text-white text-xs mt-0.5">Student Debit Card</p>
+            </div>
+            <img src={borderlessFavicon} alt="Borderless" className="h-8 w-8 object-contain" />
+          </div>
+
+          {/* Card number */}
+          <div className="flex items-center gap-2 mb-4">
+            <button onClick={() => setShowNumber(!showNumber)} className="text-white/60">
+              {showNumber ? <EyeOff size={14} /> : <Eye size={14} />}
+            </button>
+            <p className="text-base font-mono tracking-widest">
+              {showNumber ? `4532 8821 9034 ${card.last4}` : `•••• •••• •••• ${card.last4}`}
+            </p>
+          </div>
+
+          <div className="flex justify-between items-end">
+            <div>
+              <p className="text-white/60 text-xs">Card Holder</p>
+              <p className="text-sm font-semibold tracking-wide">{card.holder}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-white/60 text-xs">Expires</p>
+              <p className="text-sm font-semibold">{card.expiry}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold">VISA</p>
+            </div>
+          </div>
+
+          {frozen && (
+            <div className="absolute inset-0 rounded-3xl bg-black/30 flex items-center justify-center">
+              <div className="text-center">
+                <Snowflake size={32} className="text-white mx-auto mb-1" />
+                <p className="text-white font-semibold text-sm">Card Frozen</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Quick controls */}
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={() => setFrozen(!frozen)}
+          className={`flex items-center gap-2 py-3 px-4 rounded-2xl border font-semibold text-sm transition-all ${
+            frozen
+              ? 'bg-[#0062db] text-white border-[#0062db]'
+              : 'bg-white text-gray-700 border-gray-200'
+          }`}
+        >
+          <Snowflake size={16} />
+          {frozen ? 'Unfreeze' : 'Freeze Card'}
+        </button>
+        <button
+          onClick={() => setShowSettings(!showSettings)}
+          className={`flex items-center gap-2 py-3 px-4 rounded-2xl border font-semibold text-sm transition-all ${showSettings ? 'bg-[#0062db] text-white border-[#0062db]' : 'bg-white text-gray-700 border-gray-200'}`}
+        >
+          <Settings size={16} />
+          Card Settings
+          {showSettings ? <ChevronUp size={14} className="ml-auto" /> : <ChevronDown size={14} className="ml-auto" />}
+        </button>
+      </div>
+
+      {/* Card Settings panel */}
+      {showSettings && (
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-5">
+          <p className="text-sm font-semibold text-gray-800">Spend Limits</p>
+
+          {/* Per transaction */}
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-xs font-medium text-gray-700">Per Transaction Limit</p>
+              <p className="text-sm font-bold text-[#0062db]">${perTxLimit.toLocaleString()}</p>
+            </div>
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+              <div className="h-full bg-[#0062db] rounded-full" style={{ width: `${(perTxLimit / 2000) * 100}%` }} />
+            </div>
+            <input
+              type="range" min={50} max={2000} step={50}
+              value={perTxLimit}
+              onChange={e => setPerTxLimit(parseInt(e.target.value))}
+              className="w-full accent-[#0062db]"
+            />
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>$50</span><span>$2,000</span>
+            </div>
+          </div>
+
+          {/* Daily limit */}
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-xs font-medium text-gray-700">Daily Limit</p>
+              <p className="text-sm font-bold text-[#0062db]">${dailyLimit.toLocaleString()}</p>
+            </div>
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+              <div className="h-full bg-[#0062db] rounded-full" style={{ width: `${(dailyLimit / 5000) * 100}%` }} />
+            </div>
+            <input
+              type="range" min={100} max={5000} step={100}
+              value={dailyLimit}
+              onChange={e => setDailyLimit(parseInt(e.target.value))}
+              className="w-full accent-[#0062db]"
+            />
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>$100</span><span>$5,000</span>
+            </div>
+          </div>
+
+          {/* Monthly limit */}
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-xs font-medium text-gray-700">Monthly Limit</p>
+              <p className="text-sm font-bold text-[#0062db]">${spendLimit.toLocaleString()}</p>
+            </div>
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+              <div
+                className={`h-full rounded-full transition-all ${spentPct > 80 ? 'bg-red-400' : 'bg-[#0062db]'}`}
+                style={{ width: `${Math.min(spentPct, 100)}%` }}
+              />
+            </div>
+            <input
+              type="range" min={500} max={10000} step={500}
+              value={spendLimit}
+              onChange={e => setSpendLimit(parseInt(e.target.value))}
+              className="w-full accent-[#0062db]"
+            />
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>$500</span><span>$10,000</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Recent Card Transactions */}
+      <section>
+        <h2 className="font-semibold text-gray-800 text-sm mb-3">Recent Transactions</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
+          {transactions.filter(tx => tx.icon === 'card').slice(0, 5).map(tx => (
+            <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
+              <TxIcon tx={tx} />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-800 truncate">{tx.label}</p>
+                <p className="text-xs text-gray-400">{tx.date}</p>
+              </div>
+              <p className={`text-sm font-semibold ${tx.type === 'credit' ? 'text-green-600' : 'text-gray-700'}`}>
+                {tx.type === 'credit' ? '+' : '-'}{tx.currency === 'USD' ? '$' : '€'}{tx.amount.toLocaleString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <p className="text-xs text-gray-400 mb-1">Cashback Earned</p>
+          <p className="text-xl font-bold text-green-600">${card.cashbackEarned}</p>
+          <p className="text-xs text-gray-400 mt-0.5">This month</p>
+        </div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <p className="text-xs text-gray-400 mb-1">Card Network</p>
+          <p className="text-xl font-bold text-gray-800">{card.network}</p>
+          <p className="text-xs text-gray-400 mt-0.5">Global acceptance</p>
+        </div>
+      </div>
+    </div>
+  );
+}

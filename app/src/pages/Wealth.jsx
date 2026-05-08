@@ -8,7 +8,7 @@ export default function Wealth() {
   return (
     <div className="p-4 md:p-6 space-y-5">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">Wealth</h1>
+        <h1 className="text-xl font-bold text-gray-900">Investing</h1>
         <p className="text-xs text-gray-400">Grow while you study</p>
       </div>
 

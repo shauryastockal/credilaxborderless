@@ -8,7 +8,7 @@ const navItems = [
   { to: '/loan', label: 'Loan', icon: GraduationCap },
   { to: '/send', label: 'Send', icon: Send },
   { to: '/card', label: 'Card', icon: CreditCard },
-  { to: '/wealth', label: 'Wealth', icon: TrendingUp },
+  { to: '/wealth', label: 'Investing', icon: TrendingUp },
 ];
 
 export default function Layout() {

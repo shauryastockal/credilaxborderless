@@ -133,8 +133,10 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
 
   const destCurrency = selectedBeneficiary?.currency || 'USD';
   const rate = getRate(selectedWallet.currency, destCurrency);
-  const feeUSD = transferType === 'instant' ? 5 : 15;
-  const feeInWallet = feeUSD * getRate('USD', selectedWallet.currency);
+  const walletRate = getRate('USD', selectedWallet.currency);
+  const instantFee = (5 * walletRate).toFixed(2);
+  const swiftFee = (15 * walletRate).toFixed(2);
+  const feeInWallet = transferType === 'instant' ? instantFee : swiftFee;
   const convertedAmount = amount ? parseFloat(amount) * rate : 0;
   const sameWallet = selectedWallet.currency === destCurrency;
 
@@ -253,13 +255,13 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
                 onClick={() => setTransferType('instant')}
                 className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all ${transferType === 'instant' ? 'bg-[#0062db] text-white border-[#0062db]' : 'bg-white text-gray-600 border-gray-200'}`}
               >
-                Instant · {selectedWallet.symbol}{feeInWallet.toFixed(2)}
+                Instant · {selectedWallet.symbol}{instantFee}
               </button>
               <button
                 onClick={() => setTransferType('swift')}
                 className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all ${transferType === 'swift' ? 'bg-[#0062db] text-white border-[#0062db]' : 'bg-white text-gray-600 border-gray-200'}`}
               >
-                SWIFT · {selectedWallet.symbol}{(feeUSD * 3 * getRate('USD', selectedWallet.currency)).toFixed(2)}
+                SWIFT · {selectedWallet.symbol}{swiftFee}
               </button>
             </div>
           </div>

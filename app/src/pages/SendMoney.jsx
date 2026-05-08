@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, ChevronRight, CheckCircle, Plus } from 'lucide-react';
+import { Search, ChevronRight, CheckCircle, Plus, ArrowLeft } from 'lucide-react';
 import { wallets, indianBeneficiaries, internationalBeneficiaries } from '../data/dummy';
+
+const COUNTRIES = [
+  'United States', 'United Kingdom', 'Germany', 'France', 'Australia',
+  'Canada', 'Singapore', 'UAE', 'Netherlands', 'Sweden', 'Other',
+];
 
 const indiaCategories = ['Education', 'Living Expenses', 'Family Support', 'Other'];
 const globalCategories = ['Tuition Fees', 'Rent', 'Living Expenses', 'Other'];
@@ -103,6 +108,21 @@ export default function SendMoney() {
 
 function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary, amount, setAmount, category, setCategory, wallet, onSend }) {
   const [transferType, setTransferType] = useState('instant');
+  const [addingBeneficiary, setAddingBeneficiary] = useState(false);
+  const [localBeneficiaries, setLocalBeneficiaries] = useState(internationalBeneficiaries);
+
+  if (addingBeneficiary) {
+    return (
+      <AddBeneficiaryForm
+        isIndia={false}
+        onBack={() => setAddingBeneficiary(false)}
+        onSave={(b) => {
+          setLocalBeneficiaries(prev => [...prev, { ...b, id: Date.now() }]);
+          setAddingBeneficiary(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -126,10 +146,10 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
           </div>
 
           <div className="space-y-2">
-            {internationalBeneficiaries.map(b => (
+            {localBeneficiaries.map(b => (
               <button
                 key={b.id}
-                onClick={() => { setSelectedBeneficiary(b); setCategory(b.category); setStep(2); }}
+                onClick={() => { setSelectedBeneficiary(b); setCategory(b.category || ''); setStep(2); }}
                 className={`w-full text-left bg-white rounded-2xl p-4 border shadow-sm flex items-center gap-3 ${selectedBeneficiary?.id === b.id ? 'border-[#0062db]' : 'border-gray-100'}`}
               >
                 <div className="w-10 h-10 rounded-full bg-[#e8f0fe] flex items-center justify-center text-[#0062db] font-bold text-sm">
@@ -138,14 +158,17 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-gray-800">{b.name}</p>
                   <p className="text-xs text-gray-400">{b.bank} · {b.country}</p>
-                  <span className="text-xs text-[#0062db] font-medium bg-[#e8f0fe] px-2 py-0.5 rounded-full mt-1 inline-block">{b.category}</span>
+                  {b.category && <span className="text-xs text-[#0062db] font-medium bg-[#e8f0fe] px-2 py-0.5 rounded-full mt-1 inline-block">{b.category}</span>}
                 </div>
                 <ChevronRight size={16} className="text-gray-300" />
               </button>
             ))}
           </div>
 
-          <button className="w-full border border-dashed border-gray-300 rounded-2xl py-3 flex items-center justify-center gap-2 text-sm text-gray-500">
+          <button
+            onClick={() => setAddingBeneficiary(true)}
+            className="w-full border border-dashed border-gray-300 rounded-2xl py-3 flex items-center justify-center gap-2 text-sm text-gray-500 hover:border-[#0062db] hover:text-[#0062db] transition-colors"
+          >
             <Plus size={16} />
             Add New Beneficiary
           </button>
@@ -258,6 +281,21 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
 
 function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary, amount, setAmount, category, setCategory, fxRate, wallet, onSend }) {
   const inrAmount = amount ? (parseFloat(amount) * fxRate).toFixed(2) : '';
+  const [addingBeneficiary, setAddingBeneficiary] = useState(false);
+  const [localBeneficiaries, setLocalBeneficiaries] = useState(indianBeneficiaries);
+
+  if (addingBeneficiary) {
+    return (
+      <AddBeneficiaryForm
+        isIndia={true}
+        onBack={() => setAddingBeneficiary(false)}
+        onSave={(b) => {
+          setLocalBeneficiaries(prev => [...prev, { ...b, id: Date.now(), account: `••••${b.accountNumber.slice(-4)}` }]);
+          setAddingBeneficiary(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -280,7 +318,7 @@ function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary,
           </div>
 
           <div className="space-y-2">
-            {indianBeneficiaries.map(b => (
+            {localBeneficiaries.map(b => (
               <button
                 key={b.id}
                 onClick={() => { setSelectedBeneficiary(b); setStep(2); }}
@@ -298,7 +336,10 @@ function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary,
             ))}
           </div>
 
-          <button className="w-full border border-dashed border-gray-300 rounded-2xl py-3 flex items-center justify-center gap-2 text-sm text-gray-500">
+          <button
+            onClick={() => setAddingBeneficiary(true)}
+            className="w-full border border-dashed border-gray-300 rounded-2xl py-3 flex items-center justify-center gap-2 text-sm text-gray-500 hover:border-[#0062db] hover:text-[#0062db] transition-colors"
+          >
             <Plus size={16} />
             Add New Beneficiary
           </button>
@@ -399,6 +440,134 @@ function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary,
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function AddBeneficiaryForm({ isIndia, onBack, onSave }) {
+  const [payeeType, setPayeeType] = useState('individual');
+  const [name, setName] = useState('');
+  const [country, setCountry] = useState(isIndia ? 'India' : '');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [bankCode, setBankCode] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  const canSave = name && accountNumber && bankCode && (isIndia || country);
+
+  const handleSave = () => {
+    setSaved(true);
+    setTimeout(() => {
+      onSave({ name, payeeType, country: isIndia ? '🇮🇳 India' : country, accountNumber, bankCode, bank: bankCode, relation: payeeType === 'business' ? 'Business' : 'Individual' });
+    }, 800);
+  };
+
+  if (saved) {
+    return (
+      <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center space-y-4">
+        <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+          <CheckCircle size={28} className="text-green-500" />
+        </div>
+        <p className="text-base font-bold text-gray-900">Beneficiary Saved!</p>
+        <p className="text-sm text-gray-500">{name} has been added to your beneficiaries.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3">
+        <button onClick={onBack} className="w-8 h-8 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center">
+          <ArrowLeft size={15} className="text-gray-600" />
+        </button>
+        <h2 className="text-sm font-semibold text-gray-800">Add New Beneficiary</h2>
+      </div>
+
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-4">
+        {/* Payee type */}
+        <div>
+          <label className="text-xs text-gray-500 mb-2 block">Payee Type</label>
+          <div className="flex gap-2">
+            {['individual', 'business'].map(type => (
+              <button
+                key={type}
+                onClick={() => setPayeeType(type)}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-semibold border transition-all capitalize ${
+                  payeeType === type ? 'bg-[#0062db] text-white border-[#0062db]' : 'bg-white text-gray-600 border-gray-200'
+                }`}
+              >
+                {type === 'individual' ? 'Individual' : 'Business'}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Payee name */}
+        <div>
+          <label className="text-xs text-gray-500 mb-1.5 block">Payee Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder={payeeType === 'business' ? 'e.g. NYU Bursar Office' : 'e.g. Rahul Sharma'}
+            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0062db]"
+          />
+        </div>
+
+        {/* Country */}
+        <div>
+          <label className="text-xs text-gray-500 mb-1.5 block">Payee Country</label>
+          {isIndia ? (
+            <div className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-gray-50 text-gray-500 flex items-center gap-2">
+              🇮🇳 India
+            </div>
+          ) : (
+            <select
+              value={country}
+              onChange={e => setCountry(e.target.value)}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:border-[#0062db]"
+            >
+              <option value="">Select country</option>
+              {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          )}
+        </div>
+
+        {/* Account number */}
+        <div>
+          <label className="text-xs text-gray-500 mb-1.5 block">Account Number</label>
+          <input
+            type="text"
+            value={accountNumber}
+            onChange={e => setAccountNumber(e.target.value)}
+            placeholder="Enter account number"
+            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0062db]"
+          />
+        </div>
+
+        {/* IFSC / Sort code */}
+        <div>
+          <label className="text-xs text-gray-500 mb-1.5 block">
+            {isIndia ? 'IFSC Code' : 'Sort Code / Routing Number'}
+          </label>
+          <input
+            type="text"
+            value={bankCode}
+            onChange={e => setBankCode(e.target.value)}
+            placeholder={isIndia ? 'e.g. HDFC0001234' : 'e.g. 20-15-42'}
+            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0062db]"
+          />
+        </div>
+
+        <button
+          onClick={handleSave}
+          disabled={!canSave}
+          className={`w-full font-semibold py-3 rounded-xl text-sm transition-all ${
+            canSave ? 'bg-[#0062db] text-white' : 'bg-gray-100 text-gray-400'
+          }`}
+        >
+          Save Beneficiary
+        </button>
+      </div>
     </div>
   );
 }

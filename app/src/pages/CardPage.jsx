@@ -45,36 +45,49 @@ export default function CardPage() {
           {/* Card Visual */}
           <div className="relative">
             <div
-              className={`rounded-3xl p-6 text-white transition-all duration-300 ${frozen ? 'opacity-70 grayscale' : ''}`}
-              style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', minHeight: 200 }}
+              className={`rounded-3xl p-6 text-white transition-all duration-300 flex flex-col justify-between ${frozen ? 'opacity-70 grayscale' : ''}`}
+              style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}
             >
-              <div className="flex justify-between items-start mb-8">
+              {/* Row 1: brand + logo */}
+              <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-white/60 text-xs font-medium">borderless × credila</p>
-                  <p className="text-white text-xs mt-0.5">Student Debit Card</p>
+                  <p className="text-white/50 text-[11px] font-medium tracking-wide">borderless × credila</p>
+                  <p className="text-white/80 text-[11px] mt-0.5">Student Debit Card</p>
                 </div>
-                <img src={borderlessFavicon} alt="Borderless" className="h-8 w-8 object-contain" />
+                <img src={borderlessFavicon} alt="Borderless" className="h-7 w-7 object-contain opacity-80" />
               </div>
-              <div className="flex items-center gap-2 mb-4">
-                <button onClick={() => setShowNumber(!showNumber)} className="text-white/60">
-                  {showNumber ? <EyeOff size={14} /> : <Eye size={14} />}
-                </button>
-                <p className="text-base font-mono tracking-widest">
-                  {showNumber ? `4532 8821 9034 ${card.last4}` : `•••• •••• •••• ${card.last4}`}
-                </p>
+
+              {/* Row 2: chip + number */}
+              <div>
+                {/* EMV chip */}
+                <div className="w-9 h-7 rounded-md mb-3 border border-yellow-200/40"
+                  style={{ background: 'linear-gradient(135deg, #d4a843 0%, #f0cc6e 40%, #b8902e 100%)' }}
+                >
+                  <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-px p-0.5 opacity-60">
+                    {Array.from({length:9}).map((_,i) => <div key={i} className="bg-yellow-900/30 rounded-sm" />)}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <p className="text-base font-mono tracking-widest">
+                    {showNumber ? `4532 8821 9034 ${card.last4}` : `•••• •••• •••• ${card.last4}`}
+                  </p>
+                  <button onClick={() => setShowNumber(!showNumber)} className="text-white/50 ml-1">
+                    {showNumber ? <EyeOff size={13} /> : <Eye size={13} />}
+                  </button>
+                </div>
               </div>
+
+              {/* Row 3: name + expiry + visa */}
               <div className="flex justify-between items-end">
                 <div>
-                  <p className="text-white/60 text-xs">Card Holder</p>
-                  <p className="text-sm font-semibold tracking-wide">{card.holder}</p>
+                  <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Card Holder</p>
+                  <p className="text-sm font-semibold tracking-wider">{card.holder}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-white/60 text-xs">Expires</p>
+                <div className="text-center">
+                  <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Expires</p>
                   <p className="text-sm font-semibold">{card.expiry}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold">VISA</p>
-                </div>
+                <p className="text-xl font-black italic tracking-tight">VISA</p>
               </div>
               {frozen && (
                 <div className="absolute inset-0 rounded-3xl bg-black/30 flex items-center justify-center">

@@ -172,7 +172,7 @@ export default function Home() {
         {/* Left: card */}
         <section className="flex flex-col">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-semibold text-gray-800 dark:text-gray-100 text-sm">My Card</h2>
+            <h2 className="font-semibold text-gray-800 dark:text-gray-100 text-sm">My Borderless Account</h2>
             <button onClick={() => navigate('/card')} className="text-xs text-[#0062db] font-medium flex items-center gap-1">
               Manage <ChevronRight size={13} />
             </button>

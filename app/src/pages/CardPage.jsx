@@ -37,7 +37,7 @@ export default function CardPage() {
 
   return (
     <div className="p-4 md:p-6">
-      <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-5">Your Borderless Account</h1>
+      <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-5">My Borderless Account</h1>
 
       {/* ── Row 1: Card + Use Cases ── */}
       <div className="md:grid md:grid-cols-2 md:gap-8 md:items-start space-y-4 md:space-y-0 mb-4">

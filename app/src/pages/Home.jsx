@@ -150,7 +150,7 @@ export default function Home() {
 
           <div
             onClick={() => navigate('/card')}
-            className="cursor-pointer rounded-3xl p-6 text-white flex flex-col justify-between shadow-lg"
+            className="cursor-pointer rounded-3xl p-5 text-white flex flex-col justify-between shadow-lg max-w-xs"
             style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}
           >
             {/* Row 1 */}
@@ -186,7 +186,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-3">
+          <div className="mt-3 grid grid-cols-2 gap-3 max-w-xs">
             <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-400 mb-1">Spent this month</p>
               <p className="text-base font-bold text-gray-800">${card.spentThisMonth}</p>
@@ -200,9 +200,7 @@ export default function Home() {
 
         {/* Right: recent transactions */}
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-semibold text-gray-800 text-sm">Recent Transactions</h2>
-          </div>
+          <h2 className="font-semibold text-gray-800 text-sm mb-3">Recent Transactions</h2>
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
             {transactions.slice(0, 5).map(tx => (
               <div key={tx.id} className="flex items-center gap-3 px-4 py-3">

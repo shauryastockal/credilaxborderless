@@ -104,7 +104,7 @@ export default function Wealth() {
             <p className="text-lg font-bold text-gray-800">${investments.roundups.dailySavings}</p>
           </div>
           <div className="bg-[#f5f7fa] rounded-xl p-3">
-            <p className="text-xs text-gray-400 mb-1">Total Invested</p>
+            <p className="text-xs text-gray-400 mb-1">Money Invested</p>
             <p className="text-lg font-bold text-gray-800">${investments.roundups.totalRoundsUp}</p>
           </div>
           <div className="bg-[#f5f7fa] rounded-xl p-3">

@@ -2,23 +2,12 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, ChevronRight, CheckCircle, Plus, ArrowLeft, ChevronDown } from 'lucide-react';
 import { wallets, indianBeneficiaries, internationalBeneficiaries } from '../data/dummy';
+import useRates, { getRate } from '../hooks/useRates';
 
 const COUNTRIES = [
   'United States', 'United Kingdom', 'Germany', 'France', 'Australia',
   'Canada', 'Singapore', 'UAE', 'Netherlands', 'Sweden', 'Other',
 ];
-
-// Rates relative to 1 USD
-const FX_TO_USD = { USD: 1, EUR: 1.08, GBP: 1.27, AUD: 0.65, CAD: 0.73, SGD: 0.74 };
-const INR_PER_USD = 83.45;
-
-function getRate(fromCurrency, toCurrency) {
-  if (fromCurrency === toCurrency) return 1;
-  if (toCurrency === 'INR') return (1 / FX_TO_USD[fromCurrency]) * INR_PER_USD;
-  const fromUsd = FX_TO_USD[fromCurrency];
-  const toUsd = FX_TO_USD[toCurrency];
-  return (1 / fromUsd) * toUsd;
-}
 
 function formatAmount(amount, currency) {
   const symbols = { USD: '$', EUR: '€', GBP: '£', AUD: 'A$', CAD: 'C$', SGD: 'S$', INR: '₹' };
@@ -42,8 +31,7 @@ export default function SendMoney() {
   const [category, setCategory] = useState('');
   const [sent, setSent] = useState(false);
 
-  const selectedWallet = wallets[0];
-  const fxRate = 83.45;
+  const { rates, loading: ratesLoading } = useRates();
 
   const resetTab = (newTab) => {
     setTab(newTab);
@@ -85,7 +73,7 @@ export default function SendMoney() {
               ${parseFloat(amount).toLocaleString()} sent to {selectedBeneficiary?.name}
             </p>
             {tab === 'india' && (
-              <p className="text-sm text-gray-500">≈ ₹{(parseFloat(amount) * fxRate).toLocaleString('en-IN')} at {fxRate} INR/USD</p>
+              <p className="text-sm text-gray-500">≈ {formatAmount((parseFloat(amount) * getRate('USD', 'INR', rates)).toFixed(2), 'INR')} at {getRate('USD', 'INR', rates).toFixed(2)} INR/USD</p>
             )}
           </div>
           <p className="text-xs text-gray-400">Estimated arrival: 1–2 business days</p>
@@ -103,8 +91,7 @@ export default function SendMoney() {
           setAmount={setAmount}
           category={category}
           setCategory={setCategory}
-          fxRate={fxRate}
-          wallet={selectedWallet}
+          rates={rates}
           onSend={() => setSent(true)}
         />
       ) : (
@@ -117,7 +104,7 @@ export default function SendMoney() {
           setAmount={setAmount}
           category={category}
           setCategory={setCategory}
-          wallet={selectedWallet}
+          rates={rates}
           onSend={() => setSent(true)}
         />
       )}
@@ -125,15 +112,15 @@ export default function SendMoney() {
   );
 }
 
-function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary, amount, setAmount, category, setCategory, wallet, onSend }) {
+function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary, amount, setAmount, category, setCategory, rates, onSend }) {
   const [transferType, setTransferType] = useState('instant');
   const [addingBeneficiary, setAddingBeneficiary] = useState(false);
   const [localBeneficiaries, setLocalBeneficiaries] = useState(internationalBeneficiaries);
   const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
 
   const destCurrency = selectedBeneficiary?.currency || 'USD';
-  const rate = getRate(selectedWallet.currency, destCurrency);
-  const walletRate = getRate('USD', selectedWallet.currency);
+  const rate = getRate(selectedWallet.currency, destCurrency, rates);
+  const walletRate = getRate('USD', selectedWallet.currency, rates);
   const instantFee = (5 * walletRate).toFixed(2);
   const swiftFee = (15 * walletRate).toFixed(2);
   const feeInWallet = transferType === 'instant' ? instantFee : swiftFee;
@@ -326,12 +313,12 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
   );
 }
 
-function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary, amount, setAmount, category, setCategory, fxRate, wallet, onSend }) {
+function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary, amount, setAmount, category, setCategory, rates, onSend }) {
   const [addingBeneficiary, setAddingBeneficiary] = useState(false);
   const [localBeneficiaries, setLocalBeneficiaries] = useState(indianBeneficiaries);
   const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
 
-  const rate = getRate(selectedWallet.currency, 'INR');
+  const rate = getRate(selectedWallet.currency, 'INR', rates);
   const inrAmount = amount ? (parseFloat(amount) * rate).toFixed(2) : '';
 
   if (addingBeneficiary) {

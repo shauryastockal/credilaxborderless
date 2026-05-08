@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowUpDown, CheckCircle } from 'lucide-react';
-import { wallets, fxRates } from '../data/dummy';
+import { wallets } from '../data/dummy';
+import useRates, { getRate } from '../hooks/useRates';
 
 export default function Convert() {
   const navigate = useNavigate();
@@ -10,10 +11,11 @@ export default function Convert() {
   const [amount, setAmount] = useState('');
   const [converted, setConverted] = useState(false);
 
+  const { rates, loading: ratesLoading } = useRates();
+
   const from = wallets.find(w => w.id === fromId);
   const to = wallets.find(w => w.id === toId) || { currency: 'EUR', symbol: '€', flag: '🇪🇺' };
-  const rateKey = `${from.currency}-${to.currency}`;
-  const rate = fxRates[rateKey] || 0.925;
+  const rate = getRate(from.currency, to.currency, rates);
   const markup = 0.022;
   const effectiveRate = rate;
   const youGet = amount ? (parseFloat(amount) * effectiveRate).toFixed(2) : '';
@@ -151,12 +153,15 @@ export default function Convert() {
 
       {/* Rate info banner */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-        <p className="text-xs font-semibold text-gray-700 mb-2">Live Rates</p>
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-xs font-semibold text-gray-700">Live Rates (vs USD)</p>
+          {ratesLoading && <span className="text-xs text-gray-400">Fetching…</span>}
+        </div>
         <div className="space-y-2">
-          {Object.entries(fxRates).map(([pair, r]) => (
-            <div key={pair} className="flex justify-between text-xs text-gray-600">
-              <span>{pair.replace('-', ' → ')}</span>
-              <span className="font-medium">{r}</span>
+          {currencies.filter(c => c.id !== 'usd').map(c => (
+            <div key={c.id} className="flex justify-between text-xs text-gray-600">
+              <span>{c.flag} USD → {c.currency}</span>
+              <span className="font-medium">{getRate('USD', c.currency, rates).toFixed(4)}</span>
             </div>
           ))}
         </div>

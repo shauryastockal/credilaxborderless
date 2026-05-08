@@ -201,7 +201,8 @@ export default function Home() {
         {/* Right: recent transactions */}
         <section className="flex flex-col">
           <h2 className="font-semibold text-gray-800 text-sm mb-3">Recent Transactions</h2>
-          <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
+          <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between">
+            <div className="divide-y divide-gray-50">
             {transactions.slice(0, 5).map(tx => (
               <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
                 <TxIcon tx={tx} />
@@ -214,6 +215,12 @@ export default function Home() {
                 </p>
               </div>
             ))}
+            </div>
+            <div className="px-4 py-3 border-t border-gray-50">
+              <button onClick={() => {}} className="text-xs text-[#0062db] font-medium w-full text-center">
+                View all transactions
+              </button>
+            </div>
           </div>
         </section>
 

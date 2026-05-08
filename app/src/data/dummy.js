@@ -103,14 +103,14 @@ export const card = {
 };
 
 export const transactions = [
-  { id: 1, type: 'credit', label: 'Interest Earned — Apr 2025', amount: 11.34, currency: 'USD', date: 'May 1, 2025', icon: 'interest' },
-  { id: 2, type: 'debit', label: 'Starbucks NYC', amount: 6.50, currency: 'USD', date: 'Apr 29, 2025', icon: 'card' },
-  { id: 3, type: 'debit', label: 'Shaurya Anand', amount: 200.00, currency: 'USD', date: 'Apr 27, 2025', icon: 'transfer' },
-  { id: 4, type: 'credit', label: 'Credila', amount: 15000.00, currency: 'USD', date: 'Apr 15, 2025', icon: 'loan' },
-  { id: 5, type: 'debit', label: 'NYU Tuition — Spring', amount: 11000.00, currency: 'USD', date: 'Apr 10, 2025', icon: 'card' },
-  { id: 6, type: 'debit', label: 'Converted USD → EUR', amount: 500.00, currency: 'USD', date: 'Apr 5, 2025', icon: 'convert' },
-  { id: 7, type: 'credit', label: 'Converted EUR received', amount: 462.50, currency: 'EUR', date: 'Apr 5, 2025', icon: 'convert' },
-  { id: 8, type: 'debit', label: 'Amazon.com', amount: 34.99, currency: 'USD', date: 'Apr 3, 2025', icon: 'card' },
+  { id: 1, type: 'credit', label: 'Interest Earned — Apr 2025', amount: 11.34,    currency: 'USD', date: 'May 1, 2025',  icon: 'interest' },
+  { id: 2, type: 'debit',  label: 'Starbucks NYC',              amount: 6.50,     currency: 'USD', date: 'Apr 29, 2025', icon: 'card' },
+  { id: 3, type: 'debit',  label: 'Shaurya Anand',              amount: 200.00,   currency: 'USD', date: 'Apr 27, 2025', icon: 'transfer' },
+  { id: 4, type: 'credit', label: 'Credila',                    amount: 15000.00, currency: 'USD', date: 'Apr 15, 2025', icon: 'loan' },
+  { id: 5, type: 'debit',  label: 'NYU Tuition — Spring',       amount: 11000.00, currency: 'USD', date: 'Apr 10, 2025', icon: 'card' },
+  { id: 6, type: 'debit',  label: 'Converted USD → EUR',        amount: 500.00,   currency: 'USD', date: 'Apr 5, 2025',  icon: 'convert' },
+  { id: 7, type: 'credit', label: 'Converted EUR received',     amount: 462.50,   currency: 'EUR', date: 'Apr 5, 2025',  icon: 'convert' },
+  { id: 8, type: 'debit',  label: 'Amazon.com',                 amount: 34.99,    currency: 'USD', date: 'Apr 3, 2025',  icon: 'card' },
 ];
 
 export const fxRates = {

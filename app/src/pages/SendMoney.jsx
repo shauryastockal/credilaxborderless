@@ -58,7 +58,7 @@ export default function SendMoney() {
           onClick={() => resetTab('india')}
           className={`flex-1 py-2 rounded-xl text-xs font-semibold transition-all ${tab === 'india' ? 'bg-[#0062db] text-white' : 'text-gray-400'}`}
         >
-          🇮🇳 Send to India
+          🇮🇳 Send money home
         </button>
       </div>
 

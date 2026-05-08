@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowUpRight, ArrowDownLeft, RefreshCw, IndianRupee, TrendingUp, ChevronRight, Sparkles, Lock, CreditCard } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, RefreshCw, IndianRupee, TrendingUp, ChevronRight, Sparkles, Lock, CreditCard, GraduationCap, Calendar, DollarSign } from 'lucide-react';
 import { user, wallets, loan, transactions, card } from '../data/dummy';
 import borderlessFavicon from '../assets/borderless_favicon.png';
 
@@ -246,6 +246,75 @@ export default function Home() {
         </section>
 
       </div>
+
+      {/* Scholarships */}
+      <section>
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h2 className="font-semibold text-gray-800 text-sm">Scholarships</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Opportunities for international students</p>
+          </div>
+        </div>
+
+        <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white flex">
+          {/* Left: content */}
+          <div className="flex-1 p-5 flex flex-col justify-between">
+            {/* Title row */}
+            <div>
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-[#e8f0fe] rounded-xl flex items-center justify-center shrink-0">
+                    <GraduationCap size={20} className="text-[#0062db]" />
+                  </div>
+                  <div>
+                    <p className="text-gray-900 font-bold text-base leading-tight">Borderless Merit Scholarship</p>
+                    <p className="text-gray-400 text-xs mt-0.5">Powered by Borderless × Credila</p>
+                  </div>
+                </div>
+                <span className="bg-green-50 text-green-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-200 shrink-0 ml-3">
+                  Open
+                </span>
+              </div>
+
+              <p className="text-gray-500 text-xs leading-relaxed mb-4">
+                Awarded to outstanding Indian students pursuing STEM or Business degrees abroad. Recipients get a tuition credit applied directly to their Credila loan — no repayment needed.
+              </p>
+
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                <div className="bg-[#e8f0fe] rounded-xl p-2.5 text-center">
+                  <DollarSign size={13} className="text-[#0062db] mx-auto mb-1" />
+                  <p className="text-[#0062db] font-bold text-sm">$2,500</p>
+                  <p className="text-gray-400 text-[10px]">Award</p>
+                </div>
+                <div className="bg-orange-50 rounded-xl p-2.5 text-center">
+                  <Calendar size={13} className="text-orange-500 mx-auto mb-1" />
+                  <p className="text-orange-500 font-bold text-sm">Jul 31</p>
+                  <p className="text-gray-400 text-[10px]">Deadline</p>
+                </div>
+                <div className="bg-purple-50 rounded-xl p-2.5 text-center">
+                  <Sparkles size={13} className="text-purple-500 mx-auto mb-1" />
+                  <p className="text-purple-500 font-bold text-sm">50</p>
+                  <p className="text-gray-400 text-[10px]">Seats</p>
+                </div>
+              </div>
+            </div>
+
+            <button className="w-full bg-[#0062db] text-white font-bold text-sm py-2.5 rounded-xl hover:bg-blue-700 transition-colors">
+              Apply Now
+            </button>
+          </div>
+
+          {/* Right: graduate photo — no blending, clean separator */}
+          <div className="hidden sm:block w-52 shrink-0 border-l border-gray-100">
+            <img
+              src="https://images.unsplash.com/photo-1627556704302-624286467c65?w=400&q=80"
+              alt="Graduate student"
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

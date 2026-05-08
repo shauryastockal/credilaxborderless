@@ -1,12 +1,31 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, ChevronRight, CheckCircle, Plus, ArrowLeft } from 'lucide-react';
+import { Search, ChevronRight, CheckCircle, Plus, ArrowLeft, ChevronDown } from 'lucide-react';
 import { wallets, indianBeneficiaries, internationalBeneficiaries } from '../data/dummy';
 
 const COUNTRIES = [
   'United States', 'United Kingdom', 'Germany', 'France', 'Australia',
   'Canada', 'Singapore', 'UAE', 'Netherlands', 'Sweden', 'Other',
 ];
+
+// Rates relative to 1 USD
+const FX_TO_USD = { USD: 1, EUR: 1.08, GBP: 1.27, AUD: 0.65, CAD: 0.73, SGD: 0.74 };
+const INR_PER_USD = 83.45;
+
+function getRate(fromCurrency, toCurrency) {
+  if (fromCurrency === toCurrency) return 1;
+  if (toCurrency === 'INR') return (1 / FX_TO_USD[fromCurrency]) * INR_PER_USD;
+  const fromUsd = FX_TO_USD[fromCurrency];
+  const toUsd = FX_TO_USD[toCurrency];
+  return (1 / fromUsd) * toUsd;
+}
+
+function formatAmount(amount, currency) {
+  const symbols = { USD: '$', EUR: '€', GBP: '£', AUD: 'A$', CAD: 'C$', SGD: 'S$', INR: '₹' };
+  const sym = symbols[currency] || currency + ' ';
+  if (currency === 'INR') return sym + parseFloat(amount).toLocaleString('en-IN');
+  return sym + parseFloat(amount).toLocaleString();
+}
 
 const indiaCategories = ['Education', 'Living Expenses', 'Family Support', 'Other'];
 const globalCategories = ['Tuition Fees', 'Rent', 'Living Expenses', 'Other'];
@@ -110,6 +129,14 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
   const [transferType, setTransferType] = useState('instant');
   const [addingBeneficiary, setAddingBeneficiary] = useState(false);
   const [localBeneficiaries, setLocalBeneficiaries] = useState(internationalBeneficiaries);
+  const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
+
+  const destCurrency = selectedBeneficiary?.currency || 'USD';
+  const rate = getRate(selectedWallet.currency, destCurrency);
+  const feeUSD = transferType === 'instant' ? 5 : 15;
+  const feeInWallet = feeUSD * getRate('USD', selectedWallet.currency);
+  const convertedAmount = amount ? parseFloat(amount) * rate : 0;
+  const sameWallet = selectedWallet.currency === destCurrency;
 
   if (addingBeneficiary) {
     return (
@@ -189,10 +216,12 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
             </div>
           </div>
 
+          <WalletSelector selected={selectedWallet} onSelect={setSelectedWallet} />
+
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-            <label className="text-xs text-gray-500 mb-1 block">You Send (USD)</label>
+            <label className="text-xs text-gray-500 mb-1 block">You Send ({selectedWallet.currency})</label>
             <div className="flex items-center gap-2 border-b border-gray-100 pb-3 mb-3">
-              <span className="text-3xl font-bold text-gray-900">$</span>
+              <span className="text-3xl font-bold text-gray-900">{selectedWallet.symbol}</span>
               <input
                 type="number"
                 value={amount}
@@ -200,23 +229,37 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
                 placeholder="0.00"
                 className="flex-1 text-3xl font-bold text-gray-900 focus:outline-none"
               />
-              <span className="text-sm text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">USD</span>
+              <span className="text-sm text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">{selectedWallet.currency}</span>
             </div>
-            <div className="flex justify-between items-center text-xs text-gray-400 mt-1">
+            {!sameWallet && (
+              <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
+                <span>Recipient gets ({destCurrency})</span>
+                <span className="font-semibold text-gray-800">
+                  {amount ? formatAmount(convertedAmount, destCurrency) : '—'}
+                </span>
+              </div>
+            )}
+            {!sameWallet && (
+              <div className="flex justify-between items-center text-xs text-gray-400 mb-3">
+                <span>Rate</span>
+                <span>1 {selectedWallet.currency} = {rate.toFixed(4)} {destCurrency}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-center text-xs text-gray-400 mb-2">
               <span>Transfer type</span>
             </div>
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2">
               <button
                 onClick={() => setTransferType('instant')}
                 className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all ${transferType === 'instant' ? 'bg-[#0062db] text-white border-[#0062db]' : 'bg-white text-gray-600 border-gray-200'}`}
               >
-                Instant · $5.00
+                Instant · {selectedWallet.symbol}{feeInWallet.toFixed(2)}
               </button>
               <button
                 onClick={() => setTransferType('swift')}
                 className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all ${transferType === 'swift' ? 'bg-[#0062db] text-white border-[#0062db]' : 'bg-white text-gray-600 border-gray-200'}`}
               >
-                SWIFT · $15
+                SWIFT · {selectedWallet.symbol}{(feeUSD * 3 * getRate('USD', selectedWallet.currency)).toFixed(2)}
               </button>
             </div>
           </div>
@@ -255,12 +298,14 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
         <div className="space-y-4">
           <h2 className="text-sm font-semibold text-gray-800">Review & Confirm</h2>
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
-            <Row label="From" value="USD Wallet" />
+            <Row label="From" value={`${selectedWallet.flag} ${selectedWallet.currency} Wallet`} />
             <Row label="To" value={`${selectedBeneficiary?.name}`} />
             <Row label="Bank" value={`${selectedBeneficiary?.bank} · ${selectedBeneficiary?.country}`} />
-            <Row label="You Send" value={`$${parseFloat(amount).toLocaleString()}`} />
-            <Row label="Fee" value={transferType === 'instant' ? '$5.00' : '$15.00'} />
-            <Row label="Total Deducted" value={`$${(parseFloat(amount) + (transferType === 'instant' ? 5 : 15)).toLocaleString()}`} highlight />
+            <Row label="You Send" value={formatAmount(amount, selectedWallet.currency)} />
+            {!sameWallet && <Row label="Rate" value={`1 ${selectedWallet.currency} = ${rate.toFixed(4)} ${destCurrency}`} />}
+            {!sameWallet && <Row label="They Receive" value={formatAmount(convertedAmount, destCurrency)} highlight />}
+            <Row label="Fee" value={formatAmount(feeInWallet.toFixed(2), selectedWallet.currency)} />
+            <Row label="Total Deducted" value={formatAmount((parseFloat(amount || 0) + feeInWallet).toFixed(2), selectedWallet.currency)} highlight={sameWallet} />
             <Row label="Transfer Type" value={transferType === 'instant' ? 'Borderless Instant' : 'SWIFT'} />
             <Row label="Purpose" value={category} />
             <Row label="Arrival" value={transferType === 'instant' ? '0–1 business days' : '3–5 business days'} />
@@ -280,9 +325,12 @@ function GlobalFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary
 }
 
 function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary, amount, setAmount, category, setCategory, fxRate, wallet, onSend }) {
-  const inrAmount = amount ? (parseFloat(amount) * fxRate).toFixed(2) : '';
   const [addingBeneficiary, setAddingBeneficiary] = useState(false);
   const [localBeneficiaries, setLocalBeneficiaries] = useState(indianBeneficiaries);
+  const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
+
+  const rate = getRate(selectedWallet.currency, 'INR');
+  const inrAmount = amount ? (parseFloat(amount) * rate).toFixed(2) : '';
 
   if (addingBeneficiary) {
     return (
@@ -360,10 +408,12 @@ function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary,
             </div>
           </div>
 
+          <WalletSelector selected={selectedWallet} onSelect={setSelectedWallet} />
+
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-            <label className="text-xs text-gray-500 mb-1 block">You Send (USD)</label>
+            <label className="text-xs text-gray-500 mb-1 block">You Send ({selectedWallet.currency})</label>
             <div className="flex items-center gap-2 border-b border-gray-100 pb-3 mb-3">
-              <span className="text-3xl font-bold text-gray-900">$</span>
+              <span className="text-3xl font-bold text-gray-900">{selectedWallet.symbol}</span>
               <input
                 type="number"
                 value={amount}
@@ -371,15 +421,15 @@ function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary,
                 placeholder="0.00"
                 className="flex-1 text-3xl font-bold text-gray-900 focus:outline-none"
               />
-              <span className="text-sm text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">USD</span>
+              <span className="text-sm text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">{selectedWallet.currency}</span>
             </div>
             <div className="flex justify-between items-center text-xs text-gray-500">
-              <span>Recipient gets</span>
-              <span className="font-semibold text-gray-800">₹{inrAmount ? parseFloat(inrAmount).toLocaleString('en-IN') : '—'}</span>
+              <span>Recipient gets (INR)</span>
+              <span className="font-semibold text-gray-800">{inrAmount ? formatAmount(inrAmount, 'INR') : '—'}</span>
             </div>
             <div className="flex justify-between items-center text-xs text-gray-400 mt-1">
               <span>Rate</span>
-              <span>1 USD = ₹{fxRate}</span>
+              <span>1 {selectedWallet.currency} = ₹{rate.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center text-xs text-gray-400 mt-1">
               <span>Fee</span>
@@ -421,11 +471,11 @@ function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary,
         <div className="space-y-4">
           <h2 className="text-sm font-semibold text-gray-800">Review & Confirm</h2>
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
-            <Row label="From" value="USD Wallet" />
+            <Row label="From" value={`${selectedWallet.flag} ${selectedWallet.currency} Wallet`} />
             <Row label="To" value={`${selectedBeneficiary?.name} · ${selectedBeneficiary?.bank}`} />
-            <Row label="You Send" value={`$${parseFloat(amount).toLocaleString()}`} />
-            <Row label="They Receive" value={`₹${(parseFloat(amount) * fxRate).toLocaleString('en-IN')}`} highlight />
-            <Row label="Rate" value={`1 USD = ₹${fxRate}`} />
+            <Row label="You Send" value={formatAmount(amount, selectedWallet.currency)} />
+            <Row label="They Receive" value={inrAmount ? formatAmount(inrAmount, 'INR') : '—'} highlight />
+            <Row label="Rate" value={`1 ${selectedWallet.currency} = ₹${rate.toFixed(2)}`} />
             <Row label="Fee" value="Free" green />
             <Row label="Purpose" value={category} />
             <Row label="Arrival" value="1–2 business days" />
@@ -438,6 +488,52 @@ function IndiaFlow({ step, setStep, selectedBeneficiary, setSelectedBeneficiary,
               Confirm & Send
             </button>
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function WalletSelector({ selected, onSelect }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm"
+      >
+        <span className="text-lg">{selected.flag}</span>
+        <div className="flex-1 text-left">
+          <p className="text-xs text-gray-400">Pay from</p>
+          <p className="text-sm font-semibold text-gray-800">{selected.currency} Wallet</p>
+        </div>
+        <div className="text-right">
+          <p className="text-xs text-gray-400">Balance</p>
+          <p className="text-sm font-semibold text-gray-800">
+            {selected.symbol}{selected.unlienBalance.toLocaleString()}
+          </p>
+        </div>
+        <ChevronDown size={16} className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-100 rounded-2xl shadow-lg z-20 overflow-hidden">
+          {wallets.map(w => (
+            <button
+              key={w.id}
+              onClick={() => { onSelect(w); setOpen(false); }}
+              className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors ${selected.id === w.id ? 'bg-[#e8f0fe]' : ''}`}
+            >
+              <span className="text-base">{w.flag}</span>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-semibold text-gray-800">{w.currency}</p>
+              </div>
+              <p className={`text-sm font-semibold ${w.unlienBalance > 0 ? 'text-gray-800' : 'text-gray-300'}`}>
+                {w.symbol}{w.unlienBalance.toLocaleString()}
+              </p>
+              {selected.id === w.id && <div className="w-2 h-2 rounded-full bg-[#0062db]" />}
+            </button>
+          ))}
         </div>
       )}
     </div>

@@ -1,9 +1,9 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { Home, CreditCard, TrendingUp, Send, GraduationCap, Moon, Sun } from 'lucide-react';
 import borderlessLogo from '../assets/logo_borderless.svg';
-import borderlessLogoDark from '../assets/borderless_logo_darkmode.jpeg';
+import borderlessLogoDark from '../assets/borderless_logo_darkmode.png';
 import credilaLogo from '../assets/credila.svg';
-import credilaLogoDark from '../assets/credila_logo_darkmode.jpeg';
+import credilaLogoDark from '../assets/credila_logo_darkmode.png';
 import { useTheme } from '../context/ThemeContext';
 
 const desktopNavItems = [

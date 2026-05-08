@@ -137,10 +137,10 @@ export default function Home() {
       </section>
 
       {/* Card + Transactions — side by side on desktop */}
-      <div className="md:grid md:grid-cols-2 md:gap-6 md:items-start space-y-5 md:space-y-0">
+      <div className="md:grid md:grid-cols-2 md:gap-6 md:items-stretch space-y-5 md:space-y-0">
 
         {/* Left: card */}
-        <section>
+        <section className="flex flex-col">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-semibold text-gray-800 text-sm">My Card</h2>
             <button onClick={() => navigate('/card')} className="text-xs text-[#0062db] font-medium flex items-center gap-1">
@@ -150,7 +150,7 @@ export default function Home() {
 
           <div
             onClick={() => navigate('/card')}
-            className="cursor-pointer rounded-3xl p-5 text-white flex flex-col justify-between shadow-lg max-w-xs"
+            className="cursor-pointer rounded-3xl p-5 text-white flex flex-col justify-between shadow-lg w-full"
             style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}
           >
             {/* Row 1 */}
@@ -186,7 +186,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-3 max-w-xs">
+          <div className="mt-3 grid grid-cols-2 gap-3">
             <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
               <p className="text-xs text-gray-400 mb-1">Spent this month</p>
               <p className="text-base font-bold text-gray-800">${card.spentThisMonth}</p>
@@ -199,9 +199,9 @@ export default function Home() {
         </section>
 
         {/* Right: recent transactions */}
-        <section>
+        <section className="flex flex-col">
           <h2 className="font-semibold text-gray-800 text-sm mb-3">Recent Transactions</h2>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
+          <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
             {transactions.slice(0, 5).map(tx => (
               <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
                 <TxIcon tx={tx} />

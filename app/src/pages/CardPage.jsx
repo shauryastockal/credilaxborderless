@@ -37,7 +37,7 @@ export default function CardPage() {
 
   return (
     <div className="p-4 md:p-6">
-      <h1 className="text-xl font-bold text-gray-900 mb-5">My Card</h1>
+      <h1 className="text-xl font-bold text-gray-900 mb-5">Your Borderless Account</h1>
 
       <div className="md:grid md:grid-cols-2 md:gap-6 md:items-start space-y-5 md:space-y-0">
         {/* Left col: card + controls */}

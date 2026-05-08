@@ -1,5 +1,5 @@
-import { TrendingUp, Star, Share2, ChevronRight, Target, Plus } from 'lucide-react';
-import { user, investments, referral } from '../data/dummy';
+import { TrendingUp, Star, ChevronRight, Target, Plus } from 'lucide-react';
+import { user, investments } from '../data/dummy';
 
 export default function Wealth() {
   const scoreColor = user.creditScore >= 750 ? '#22c55e' : user.creditScore >= 680 ? '#f59e0b' : '#ef4444';
@@ -176,51 +176,6 @@ export default function Wealth() {
         </div>
       </div>
 
-      {/* Referral */}
-      <div
-        className="rounded-2xl p-5 text-white"
-        style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)' }}
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <Share2 size={18} className="text-white" />
-          <p className="text-sm font-semibold">Refer a Friend</p>
-        </div>
-        <p className="text-white/80 text-xs mb-4">Earn $25 for every friend who joins Borderless through your link</p>
-
-        <div className="bg-white/20 rounded-xl p-3 flex items-center justify-between mb-3">
-          <div>
-            <p className="text-white/60 text-xs">Your referral code</p>
-            <p className="text-lg font-bold tracking-widest">{referral.code}</p>
-          </div>
-          <button className="bg-white text-purple-700 text-xs font-bold px-3 py-1.5 rounded-lg">
-            Copy
-          </button>
-        </div>
-
-        <div className="grid grid-cols-3 gap-2">
-          <div className="text-center">
-            <p className="text-xl font-bold">{referral.referredCount}</p>
-            <p className="text-white/60 text-xs">Referred</p>
-          </div>
-          <div className="text-center border-x border-white/20">
-            <p className="text-xl font-bold">${referral.earnedTotal}</p>
-            <p className="text-white/60 text-xs">Earned</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xl font-bold">${referral.pendingAmount}</p>
-            <p className="text-white/60 text-xs">Pending</p>
-          </div>
-        </div>
-      </div>
-
-      {/* MCA interest reminder */}
-      <div className="rounded-2xl p-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #0062db 0%, #6366f1 100%)' }}>
-        <span className="text-2xl">✨</span>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-white">MCA Interest Active</p>
-          <p className="text-xs text-white/70 mt-0.5">Earning {user.mcaInterestRate}% p.a. on your idle USD balance</p>
-        </div>
-      </div>
       </div>{/* end right col */}
       </div>{/* end grid */}
     </div>

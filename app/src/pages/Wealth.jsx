@@ -100,7 +100,7 @@ export default function Wealth() {
 
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div className="bg-[#f5f7fa] rounded-xl p-3">
-            <p className="text-xs text-gray-400 mb-1">Round-ups Collected</p>
+            <p className="text-xs text-gray-400 mb-1">Money Invested</p>
             <p className="text-lg font-bold text-gray-800">${investments.roundups.totalRoundsUp}</p>
           </div>
           <div className="bg-[#f5f7fa] rounded-xl p-3">

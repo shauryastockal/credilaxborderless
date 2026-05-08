@@ -198,11 +198,38 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Right: recent transactions */}
-        <section className="flex flex-col min-h-0 overflow-hidden">
-          <h2 className="font-semibold text-gray-800 text-sm mb-3 shrink-0">Recent Transactions</h2>
-          <div className="flex-1 min-h-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-            <div className="overflow-hidden flex-1 divide-y divide-gray-50">
+        {/* Right: recent transactions — wrapper is a stretchy grid item with no intrinsic height */}
+        <div className="hidden md:block relative">
+          <div className="absolute inset-0 flex flex-col overflow-hidden">
+            <h2 className="font-semibold text-gray-800 text-sm mb-3 shrink-0">Recent Transactions</h2>
+            <div className="flex-1 min-h-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+              <div className="flex-1 overflow-hidden divide-y divide-gray-50">
+                {transactions.slice(0, 8).map(tx => (
+                  <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
+                    <TxIcon tx={tx} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-800 truncate">{tx.label}</p>
+                      <p className="text-xs text-gray-400">{tx.date}</p>
+                    </div>
+                    <p className={`text-sm font-semibold ${tx.type === 'credit' ? 'text-green-600' : 'text-gray-800'}`}>
+                      {tx.type === 'credit' ? '+' : '-'}{tx.currency === 'USD' ? '$' : '€'}{tx.amount.toLocaleString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="px-4 py-3 border-t border-gray-50 shrink-0">
+                <button onClick={() => {}} className="text-xs text-[#0062db] font-medium w-full text-center">
+                  View all transactions
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: transactions shown normally in flow */}
+        <section className="md:hidden">
+          <h2 className="font-semibold text-gray-800 text-sm mb-3">Recent Transactions</h2>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
             {transactions.slice(0, 8).map(tx => (
               <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
                 <TxIcon tx={tx} />
@@ -215,12 +242,6 @@ export default function Home() {
                 </p>
               </div>
             ))}
-            </div>
-            <div className="px-4 py-3 border-t border-gray-50 shrink-0">
-              <button onClick={() => {}} className="text-xs text-[#0062db] font-medium w-full text-center">
-                View all transactions
-              </button>
-            </div>
           </div>
         </section>
 

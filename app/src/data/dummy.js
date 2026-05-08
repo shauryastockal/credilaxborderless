@@ -123,6 +123,7 @@ export const fxRates = {
 };
 
 export const indianBeneficiaries = [
+  { id: 0, name: 'Arjun Mehta', bank: 'HDFC Bank', account: '••••7890', ifsc: 'HDFC0004321', relation: 'Self' },
   { id: 1, name: 'Suresh Mehta', bank: 'HDFC Bank', account: '••••4521', ifsc: 'HDFC0001234', relation: 'Father' },
   { id: 2, name: 'Priya Mehta', bank: 'SBI', account: '••••8832', ifsc: 'SBIN0012345', relation: 'Mother' },
 ];

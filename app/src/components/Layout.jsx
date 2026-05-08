@@ -13,64 +13,74 @@ const navItems = [
 
 export default function Layout() {
   return (
-    <div className="flex flex-col min-h-screen max-w-md mx-auto md:max-w-none bg-[#f5f7fa]">
-      {/* Full-width header (both mobile and desktop) */}
-      <Header />
-
-      <div className="flex flex-1 overflow-hidden">
-        {/* Desktop sidebar */}
-        <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 min-h-screen sticky top-0">
-          <nav className="flex-1 p-4 space-y-1">
-            {navItems.map(({ to, label, icon: Icon }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={to === '/'}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors ${
-                    isActive
-                      ? 'bg-[#e8f0fe] text-[#0062db]'
-                      : 'text-gray-500 hover:bg-gray-50'
-                  }`
-                }
-              >
-                <Icon size={18} />
-                {label}
-              </NavLink>
-            ))}
-          </nav>
-        </aside>
-
-        {/* Main content */}
-        <main className="flex-1 flex flex-col overflow-y-auto">
-          <div className="flex-1 pb-24 md:pb-0">
-            <Outlet />
+    <div className="flex flex-col min-h-screen max-w-md mx-auto md:max-w-none md:flex-row bg-[#f5f7fa]">
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 min-h-screen sticky top-0">
+        <Header />
+        <nav className="flex-1 p-4 space-y-1">
+          {navItems.map(({ to, label, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-colors ${
+                  isActive
+                    ? 'bg-[#e8f0fe] text-[#0062db]'
+                    : 'text-gray-500 hover:bg-gray-50'
+                }`
+              }
+            >
+              <Icon size={18} />
+              {label}
+            </NavLink>
+          ))}
+        </nav>
+        <div className="p-4 border-t border-gray-100">
+          <div className="flex items-center gap-3 px-4 py-3">
+            <div className="w-8 h-8 rounded-full bg-[#0062db] flex items-center justify-center text-white text-sm font-bold">A</div>
+            <div>
+              <p className="text-sm font-semibold text-gray-800">Arjun Mehta</p>
+              <p className="text-xs text-gray-400">NYU · New York</p>
+            </div>
           </div>
+        </div>
+      </aside>
 
-          {/* Mobile bottom nav */}
-          <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex z-50">
-            {navItems.map(({ to, label, icon: Icon }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={to === '/'}
-                className={({ isActive }) =>
-                  `flex-1 flex flex-col items-center py-3 gap-0.5 text-xs font-medium transition-colors ${
-                    isActive ? 'text-[#0062db]' : 'text-gray-400'
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    <span><Icon size={20} /></span>
-                    <span>{label}</span>
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
-        </main>
-      </div>
+      {/* Main content */}
+      <main className="flex-1 flex flex-col">
+        <div className="md:hidden">
+          <Header />
+        </div>
+        <div className="flex-1 overflow-y-auto pb-24 md:pb-0">
+          <Outlet />
+        </div>
+
+        {/* Mobile bottom nav */}
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex z-50">
+          {navItems.map(({ to, label, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) =>
+                `flex-1 flex flex-col items-center py-3 gap-0.5 text-xs font-medium transition-colors ${
+                  isActive ? 'text-[#0062db]' : 'text-gray-400'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <span>
+                    <Icon size={20} />
+                  </span>
+                  <span>{label}</span>
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+      </main>
     </div>
   );
 }

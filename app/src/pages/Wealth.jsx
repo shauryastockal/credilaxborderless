@@ -1,9 +1,22 @@
-import { TrendingUp, Star, ChevronRight, Target, Plus } from 'lucide-react';
+import { useState } from 'react';
+import { TrendingUp, Star, ChevronRight, Target, Plus, Pencil, Check } from 'lucide-react';
 import { user, investments } from '../data/dummy';
 
 export default function Wealth() {
   const scoreColor = user.creditScore >= 750 ? '#22c55e' : user.creditScore >= 680 ? '#f59e0b' : '#ef4444';
   const scorePct = (user.creditScore / user.creditScoreMax) * 100;
+  const [dailyAmount, setDailyAmount] = useState(2.5);
+  const [editing, setEditing] = useState(false);
+  const [draftAmount, setDraftAmount] = useState('2.5');
+  const [saved, setSaved] = useState(false);
+
+  function handleSave() {
+    const val = parseFloat(draftAmount);
+    if (!isNaN(val) && val > 0) setDailyAmount(val);
+    setEditing(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  }
 
   return (
     <div className="p-4 md:p-6 space-y-5">
@@ -173,6 +186,80 @@ export default function Wealth() {
           <button className="w-full mt-3 bg-gradient-to-r from-[#0062db] to-indigo-500 text-white font-semibold py-2.5 rounded-xl text-sm flex items-center justify-center gap-1">
             View Portfolio <ChevronRight size={14} />
           </button>
+        </div>
+      </div>
+
+      {/* Daily Investing */}
+      <div className="bg-white dark:bg-[#1a1d2e] rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-[#252942]">
+        <div className="p-4" style={{ background: 'linear-gradient(135deg, #059669 0%, #34d399 100%)' }}>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+              <TrendingUp size={16} className="text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white">Daily Investing</p>
+              <p className="text-xs text-white/70">Automated daily contributions</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 space-y-4">
+          {/* Balance */}
+          <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4">
+            <p className="text-xs text-green-600 dark:text-green-400 mb-1">Your Daily Investing Balance</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+              $75<span className="text-xl font-semibold text-gray-400 dark:text-gray-500">.65</span>
+            </p>
+          </div>
+
+          {/* Daily amount row */}
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">You save</p>
+              {editing ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">USD</span>
+                  <input
+                    type="number"
+                    value={draftAmount}
+                    onChange={e => setDraftAmount(e.target.value)}
+                    className="w-20 text-lg font-bold text-gray-900 dark:text-gray-100 bg-transparent border-b-2 border-[#059669] focus:outline-none"
+                    autoFocus
+                    min="0.01"
+                    step="0.5"
+                  />
+                  <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">everyday</span>
+                </div>
+              ) : (
+                <p className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                  USD {dailyAmount.toFixed(2)} <span className="text-sm font-medium text-gray-500 dark:text-gray-400">everyday</span>
+                </p>
+              )}
+            </div>
+
+            {editing ? (
+              <button
+                onClick={handleSave}
+                className="flex items-center gap-1.5 bg-[#059669] text-white text-xs font-bold px-3 py-2 rounded-xl"
+              >
+                <Check size={13} /> Save
+              </button>
+            ) : (
+              <button
+                onClick={() => { setEditing(true); setDraftAmount(String(dailyAmount)); }}
+                className="flex items-center gap-1.5 border border-gray-200 dark:border-[#252942] text-gray-600 dark:text-gray-300 text-xs font-semibold px-3 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-[#252942] transition-colors"
+              >
+                <Pencil size={12} /> Change this
+              </button>
+            )}
+          </div>
+
+          {saved && (
+            <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 rounded-xl px-3 py-2">
+              <Check size={13} className="text-green-500" />
+              <p className="text-xs text-green-700 dark:text-green-400 font-medium">Daily amount updated!</p>
+            </div>
+          )}
         </div>
       </div>
 

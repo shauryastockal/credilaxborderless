@@ -136,88 +136,90 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Card snapshot */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-gray-800 text-sm">My Card</h2>
-          <button onClick={() => navigate('/card')} className="text-xs text-[#0062db] font-medium flex items-center gap-1">
-            Manage <ChevronRight size={13} />
-          </button>
-        </div>
+      {/* Card + Transactions — side by side on desktop */}
+      <div className="md:grid md:grid-cols-2 md:gap-6 md:items-start space-y-5 md:space-y-0">
 
-        <div
-          onClick={() => navigate('/card')}
-          className="cursor-pointer rounded-3xl p-6 text-white flex flex-col justify-between shadow-lg max-w-sm"
-          style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}
-        >
-          {/* Row 1: brand + logo */}
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-white/50 text-[11px] font-medium tracking-wide">borderless × credila</p>
-              <p className="text-white/80 text-[11px] mt-0.5">Student Debit Card</p>
-            </div>
-            <img src={borderlessFavicon} alt="Borderless" className="h-7 w-7 object-contain opacity-80" />
+        {/* Left: card */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold text-gray-800 text-sm">My Card</h2>
+            <button onClick={() => navigate('/card')} className="text-xs text-[#0062db] font-medium flex items-center gap-1">
+              Manage <ChevronRight size={13} />
+            </button>
           </div>
 
-          {/* Row 2: chip + number */}
-          <div>
-            <div className="w-9 h-7 rounded-md mb-3 border border-yellow-200/40"
-              style={{ background: 'linear-gradient(135deg, #d4a843 0%, #f0cc6e 40%, #b8902e 100%)' }}
-            >
-              <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-px p-0.5 opacity-60">
-                {Array.from({ length: 9 }).map((_, i) => <div key={i} className="bg-yellow-900/30 rounded-sm" />)}
+          <div
+            onClick={() => navigate('/card')}
+            className="cursor-pointer rounded-3xl p-6 text-white flex flex-col justify-between shadow-lg"
+            style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}
+          >
+            {/* Row 1 */}
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-white/50 text-[11px] font-medium tracking-wide">borderless × credila</p>
+                <p className="text-white/80 text-[11px] mt-0.5">Student Debit Card</p>
               </div>
+              <img src={borderlessFavicon} alt="Borderless" className="h-7 w-7 object-contain opacity-80" />
             </div>
-            <p className="text-base font-mono tracking-widest">•••• •••• •••• {card.last4}</p>
-          </div>
-
-          {/* Row 3: name + expiry + visa + spend */}
-          <div className="flex justify-between items-end">
+            {/* Row 2 */}
             <div>
-              <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Card Holder</p>
-              <p className="text-sm font-semibold tracking-wider">{card.holder}</p>
-            </div>
-            <div className="text-center">
-              <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Expires</p>
-              <p className="text-sm font-semibold">{card.expiry}</p>
-            </div>
-            <p className="text-xl font-black italic tracking-tight">VISA</p>
-          </div>
-        </div>
-
-        {/* Spend summary below card */}
-        <div className="mt-3 grid grid-cols-2 gap-3 max-w-sm">
-          <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
-            <p className="text-xs text-gray-400 mb-1">Spent this month</p>
-            <p className="text-base font-bold text-gray-800">${card.spentThisMonth}</p>
-          </div>
-          <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
-            <p className="text-xs text-gray-400 mb-1">Cashback earned</p>
-            <p className="text-base font-bold text-green-600">${card.cashbackEarned}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Recent Transactions */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-gray-800 text-sm">Recent Transactions</h2>
-        </div>
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
-          {transactions.slice(0, 5).map(tx => (
-            <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
-              <TxIcon tx={tx} />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-800 truncate">{tx.label}</p>
-                <p className="text-xs text-gray-400">{tx.date}</p>
+              <div className="w-9 h-7 rounded-md mb-3 border border-yellow-200/40"
+                style={{ background: 'linear-gradient(135deg, #d4a843 0%, #f0cc6e 40%, #b8902e 100%)' }}
+              >
+                <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-px p-0.5 opacity-60">
+                  {Array.from({ length: 9 }).map((_, i) => <div key={i} className="bg-yellow-900/30 rounded-sm" />)}
+                </div>
               </div>
-              <p className={`text-sm font-semibold ${tx.type === 'credit' ? 'text-green-600' : 'text-gray-800'}`}>
-                {tx.type === 'credit' ? '+' : '-'}{tx.currency === 'USD' ? '$' : '€'}{tx.amount.toLocaleString()}
-              </p>
+              <p className="text-base font-mono tracking-widest">•••• •••• •••• {card.last4}</p>
             </div>
-          ))}
-        </div>
-      </section>
+            {/* Row 3 */}
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Card Holder</p>
+                <p className="text-sm font-semibold tracking-wider">{card.holder}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Expires</p>
+                <p className="text-sm font-semibold">{card.expiry}</p>
+              </div>
+              <p className="text-xl font-black italic tracking-tight">VISA</p>
+            </div>
+          </div>
+
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+              <p className="text-xs text-gray-400 mb-1">Spent this month</p>
+              <p className="text-base font-bold text-gray-800">${card.spentThisMonth}</p>
+            </div>
+            <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+              <p className="text-xs text-gray-400 mb-1">Cashback earned</p>
+              <p className="text-base font-bold text-green-600">${card.cashbackEarned}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Right: recent transactions */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold text-gray-800 text-sm">Recent Transactions</h2>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
+            {transactions.slice(0, 5).map(tx => (
+              <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
+                <TxIcon tx={tx} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-800 truncate">{tx.label}</p>
+                  <p className="text-xs text-gray-400">{tx.date}</p>
+                </div>
+                <p className={`text-sm font-semibold ${tx.type === 'credit' ? 'text-green-600' : 'text-gray-800'}`}>
+                  {tx.type === 'credit' ? '+' : '-'}{tx.currency === 'USD' ? '$' : '€'}{tx.amount.toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </div>
     </div>
   );
 }

@@ -4,11 +4,19 @@ import borderlessLogo from '../assets/logo_borderless.svg';
 import credilaLogo from '../assets/credila.svg';
 import { useTheme } from '../context/ThemeContext';
 
-const navItems = [
+const desktopNavItems = [
   { to: '/', label: 'Home', icon: Home },
-  { to: '/loan', label: 'Loan', icon: GraduationCap },
-  { to: '/card', label: 'Card', icon: CreditCard },
-  { to: '/send', label: 'Send', icon: Send },
+  { to: '/loan', label: 'My Loan', icon: GraduationCap },
+  { to: '/card', label: 'Borderless Account', icon: CreditCard },
+  { to: '/send', label: 'Send Money', icon: Send },
+  { to: '/wealth', label: 'Investing', icon: TrendingUp },
+];
+
+const mobileNavItems = [
+  { to: '/', label: 'Home', icon: Home },
+  { to: '/loan', label: 'My Loan', icon: GraduationCap },
+  { to: '/card', label: 'My Account', icon: CreditCard },
+  { to: '/send', label: 'Send Money', icon: Send },
   { to: '/wealth', label: 'Investing', icon: TrendingUp },
 ];
 
@@ -19,7 +27,7 @@ export default function Layout() {
       <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-[#1a1d2e] border-r border-gray-100 dark:border-[#252942] h-screen sticky top-0 overflow-y-auto">
         <Header />
         <nav className="flex-1 p-4 space-y-1">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {desktopNavItems.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
@@ -51,7 +59,7 @@ export default function Layout() {
 
         {/* Mobile bottom nav */}
         <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1a1d2e] border-t border-gray-100 dark:border-[#252942] flex z-50">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {mobileNavItems.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}

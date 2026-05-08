@@ -1,7 +1,9 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { Home, CreditCard, TrendingUp, Send, GraduationCap, Moon, Sun } from 'lucide-react';
 import borderlessLogo from '../assets/logo_borderless.svg';
+import borderlessLogoDark from '../assets/borderless_logo_darkmode.jpeg';
 import credilaLogo from '../assets/credila.svg';
+import credilaLogoDark from '../assets/credila_logo_darkmode.jpeg';
 import { useTheme } from '../context/ThemeContext';
 
 const desktopNavItems = [
@@ -112,14 +114,9 @@ function Header() {
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-white dark:bg-[#1a1d2e] border-b border-gray-100 dark:border-[#252942] md:border-b-0">
       <div className="flex items-center gap-2.5">
-        {/* Real Borderless logo */}
-        <img src={borderlessLogo} alt="Borderless" className="h-6 w-auto" />
-
-        {/* Divider */}
+        <img src={dark ? borderlessLogoDark : borderlessLogo} alt="Borderless" className="h-6 w-auto" />
         <div className="w-px h-5 bg-gray-200 dark:bg-[#252942]" />
-
-        {/* Real Credila logo */}
-        <img src={credilaLogo} alt="Credila" className="h-7 w-auto" />
+        <img src={dark ? credilaLogoDark : credilaLogo} alt="Credila" className="h-7 w-auto" />
       </div>
 
       <div className="md:hidden flex items-center gap-2">

@@ -129,11 +129,7 @@ export default function Convert() {
           <div className="bg-[#f5f7fa] rounded-xl p-3 space-y-1.5">
             <div className="flex justify-between text-xs">
               <span className="text-gray-500">Exchange Rate</span>
-              <span className="font-semibold text-gray-800">1 {from.currency} = {effectiveRate} {to.currency}</span>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-gray-500">Borderless Markup</span>
-              <span className="font-semibold text-gray-800">2.2% (inclusive)</span>
+              <span className="font-semibold text-gray-800">1 {from.currency} = {parseFloat(effectiveRate).toFixed(4)} {to.currency}</span>
             </div>
             <div className="flex justify-between text-xs border-t border-gray-200 pt-1.5">
               <span className="text-gray-700 font-medium">You Receive</span>

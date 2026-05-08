@@ -1,5 +1,5 @@
 export const user = {
-  name: 'Arjun Mehta',
+  name: 'Shaurya Anand',
   email: 'arjun.mehta@nyu.edu',
   university: 'New York University',
   country: 'USA',
@@ -93,7 +93,7 @@ export const loan = {
 export const card = {
   last4: '4289',
   network: 'Visa',
-  holder: 'ARJUN MEHTA',
+  holder: 'SHAURYA ANAND',
   expiry: '09/28',
   mode: 'debit',
   frozen: false,
@@ -105,7 +105,7 @@ export const card = {
 export const transactions = [
   { id: 1, type: 'credit', label: 'Interest Earned — Apr 2025', amount: 11.34, currency: 'USD', date: 'May 1, 2025', icon: 'interest' },
   { id: 2, type: 'debit', label: 'Starbucks NYC', amount: 6.50, currency: 'USD', date: 'Apr 29, 2025', icon: 'card' },
-  { id: 3, type: 'debit', label: 'Send to India — Mehta Family', amount: 200.00, currency: 'USD', date: 'Apr 27, 2025', icon: 'transfer' },
+  { id: 3, type: 'debit', label: 'Send to India — Anand Family', amount: 200.00, currency: 'USD', date: 'Apr 27, 2025', icon: 'transfer' },
   { id: 4, type: 'credit', label: 'Loan Tranche 2 Received', amount: 15000.00, currency: 'USD', date: 'Apr 15, 2025', icon: 'loan' },
   { id: 5, type: 'debit', label: 'NYU Tuition — Spring', amount: 11000.00, currency: 'USD', date: 'Apr 10, 2025', icon: 'card' },
   { id: 6, type: 'debit', label: 'Converted USD → EUR', amount: 500.00, currency: 'USD', date: 'Apr 5, 2025', icon: 'convert' },
@@ -123,9 +123,9 @@ export const fxRates = {
 };
 
 export const indianBeneficiaries = [
-  { id: 0, name: 'Arjun Mehta', bank: 'HDFC Bank', account: '••••7890', ifsc: 'HDFC0004321', relation: 'Self' },
-  { id: 1, name: 'Suresh Mehta', bank: 'HDFC Bank', account: '••••4521', ifsc: 'HDFC0001234', relation: 'Father' },
-  { id: 2, name: 'Priya Mehta', bank: 'SBI', account: '••••8832', ifsc: 'SBIN0012345', relation: 'Mother' },
+  { id: 0, name: 'Shaurya Anand', bank: 'HDFC Bank', account: '••••7890', ifsc: 'HDFC0004321', relation: 'Self' },
+  { id: 1, name: 'Suresh Anand', bank: 'HDFC Bank', account: '••••4521', ifsc: 'HDFC0001234', relation: 'Father' },
+  { id: 2, name: 'Priya Anand', bank: 'SBI', account: '••••8832', ifsc: 'SBIN0012345', relation: 'Mother' },
 ];
 
 export const internationalBeneficiaries = [
@@ -157,7 +157,7 @@ export const investments = {
 };
 
 export const referral = {
-  code: 'ARJUN250',
+  code: 'SHAURYA25',
   referredCount: 3,
   earnedTotal: 75.00,
   pendingAmount: 25.00,

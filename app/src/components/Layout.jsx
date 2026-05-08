@@ -38,9 +38,9 @@ export default function Layout() {
         </nav>
         <div className="p-4 border-t border-gray-100">
           <div className="flex items-center gap-3 px-4 py-3">
-            <div className="w-8 h-8 rounded-full bg-[#0062db] flex items-center justify-center text-white text-sm font-bold">A</div>
+            <div className="w-8 h-8 rounded-full bg-[#0062db] flex items-center justify-center text-white text-sm font-bold">S</div>
             <div>
-              <p className="text-sm font-semibold text-gray-800">Arjun Mehta</p>
+              <p className="text-sm font-semibold text-gray-800">Shaurya Anand</p>
               <p className="text-xs text-gray-400">NYU · New York</p>
             </div>
           </div>
@@ -100,7 +100,7 @@ function Header() {
       </div>
 
       <button className="md:hidden w-8 h-8 rounded-full bg-[#0062db] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-        A
+        S
       </button>
     </header>
   );

@@ -23,7 +23,7 @@ export const wallets = [
     symbol: '€',
     flag: '🇪🇺',
     unlienBalance: 1120.00,
-    color: '#1a7f5e',
+    color: '#3aaa7a',
   },
   {
     id: 'gbp',

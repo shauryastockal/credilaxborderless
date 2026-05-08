@@ -15,7 +15,7 @@ export default function Layout() {
   return (
     <div className="flex flex-col min-h-screen max-w-md mx-auto md:max-w-none md:flex-row bg-[#f5f7fa]">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 min-h-screen sticky top-0">
+      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 h-screen sticky top-0 overflow-y-auto">
         <Header />
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map(({ to, label, icon: Icon }) => (

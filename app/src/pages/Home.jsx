@@ -49,7 +49,7 @@ export default function Home() {
       {/* Wallet Cards */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-gray-800 text-sm">My Wallets</h2>
+          <h2 className="font-semibold text-gray-800 text-sm">My Money</h2>
           <button
             onClick={() => navigate('/convert')}
             className="text-[#0062db] text-xs font-medium flex items-center gap-1"

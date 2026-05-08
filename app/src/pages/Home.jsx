@@ -147,7 +147,7 @@ export default function Home() {
 
         <div
           onClick={() => navigate('/card')}
-          className="cursor-pointer rounded-3xl p-6 text-white flex flex-col justify-between shadow-lg"
+          className="cursor-pointer rounded-3xl p-6 text-white flex flex-col justify-between shadow-lg max-w-sm"
           style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}
         >
           {/* Row 1: brand + logo */}
@@ -186,7 +186,7 @@ export default function Home() {
         </div>
 
         {/* Spend summary below card */}
-        <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="mt-3 grid grid-cols-2 gap-3 max-w-sm">
           <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
             <p className="text-xs text-gray-400 mb-1">Spent this month</p>
             <p className="text-base font-bold text-gray-800">${card.spentThisMonth}</p>

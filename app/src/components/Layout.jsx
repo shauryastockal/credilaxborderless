@@ -7,8 +7,8 @@ import { useTheme } from '../context/ThemeContext';
 const navItems = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/loan', label: 'Loan', icon: GraduationCap },
-  { to: '/send', label: 'Send', icon: Send },
   { to: '/card', label: 'Card', icon: CreditCard },
+  { to: '/send', label: 'Send', icon: Send },
   { to: '/wealth', label: 'Investing', icon: TrendingUp },
 ];
 

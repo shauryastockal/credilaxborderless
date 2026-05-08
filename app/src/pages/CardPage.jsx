@@ -130,33 +130,24 @@ export default function CardPage() {
                   <p className="text-xs font-medium text-gray-700">Per Transaction Limit</p>
                   <p className="text-sm font-bold text-[#0062db]">${perTxLimit.toLocaleString()}</p>
                 </div>
-                <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
-                  <div className="h-full bg-[#0062db] rounded-full" style={{ width: `${(perTxLimit / 2000) * 100}%` }} />
-                </div>
                 <input type="range" min={50} max={2000} step={50} value={perTxLimit} onChange={e => setPerTxLimit(parseInt(e.target.value))} className="w-full accent-[#0062db]" />
-                <div className="flex justify-between text-xs text-gray-400"><span>$50</span><span>$2,000</span></div>
+                <div className="flex justify-between text-xs text-gray-400 mt-1"><span>$50</span><span>$2,000</span></div>
               </div>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <p className="text-xs font-medium text-gray-700">Daily Limit</p>
                   <p className="text-sm font-bold text-[#0062db]">${dailyLimit.toLocaleString()}</p>
                 </div>
-                <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
-                  <div className="h-full bg-[#0062db] rounded-full" style={{ width: `${(dailyLimit / 5000) * 100}%` }} />
-                </div>
                 <input type="range" min={100} max={5000} step={100} value={dailyLimit} onChange={e => setDailyLimit(parseInt(e.target.value))} className="w-full accent-[#0062db]" />
-                <div className="flex justify-between text-xs text-gray-400"><span>$100</span><span>$5,000</span></div>
+                <div className="flex justify-between text-xs text-gray-400 mt-1"><span>$100</span><span>$5,000</span></div>
               </div>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <p className="text-xs font-medium text-gray-700">Monthly Limit</p>
                   <p className="text-sm font-bold text-[#0062db]">${spendLimit.toLocaleString()}</p>
                 </div>
-                <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
-                  <div className={`h-full rounded-full transition-all ${spentPct > 80 ? 'bg-red-400' : 'bg-[#0062db]'}`} style={{ width: `${Math.min(spentPct, 100)}%` }} />
-                </div>
                 <input type="range" min={500} max={10000} step={500} value={spendLimit} onChange={e => setSpendLimit(parseInt(e.target.value))} className="w-full accent-[#0062db]" />
-                <div className="flex justify-between text-xs text-gray-400"><span>$500</span><span>$10,000</span></div>
+                <div className="flex justify-between text-xs text-gray-400 mt-1"><span>$500</span><span>$10,000</span></div>
               </div>
             </div>
           )}

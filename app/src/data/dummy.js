@@ -152,7 +152,7 @@ export const internationalBeneficiaries = [
 ];
 
 export const investments = {
-  roundups: { enabled: true, totalRoundsUp: 12.68, invested: 12.68 },
+  roundups: { enabled: true, totalRoundsUp: 12.68, invested: 12.68, dailySavings: 0.42 },
   portfolio: { totalValue: 14.12, gainLoss: +1.44, gainLossPct: +11.36 },
 };
 

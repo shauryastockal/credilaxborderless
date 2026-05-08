@@ -7,9 +7,11 @@ import SendMoney from './pages/SendMoney';
 import Convert from './pages/Convert';
 import CardPage from './pages/CardPage';
 import Wealth from './pages/Wealth';
+import { ThemeProvider } from './context/ThemeContext';
 
 export default function App() {
   return (
+    <ThemeProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -24,5 +26,6 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }

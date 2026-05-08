@@ -111,6 +111,7 @@ export const transactions = [
   { id: 6, type: 'debit',  label: 'Converted USD → EUR',        amount: 500.00,   currency: 'USD', date: 'Apr 5, 2025',  icon: 'convert' },
   { id: 7, type: 'credit', label: 'Converted EUR received',     amount: 462.50,   currency: 'EUR', date: 'Apr 5, 2025',  icon: 'convert' },
   { id: 8, type: 'debit',  label: 'Amazon.com',                 amount: 34.99,    currency: 'USD', date: 'Apr 3, 2025',  icon: 'card' },
+  { id: 9, type: 'debit',  label: 'Whole Foods Market',         amount: 52.10,    currency: 'USD', date: 'Apr 2, 2025',  icon: 'card' },
 ];
 
 export const fxRates = {

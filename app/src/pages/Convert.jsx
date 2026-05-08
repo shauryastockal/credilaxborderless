@@ -76,7 +76,7 @@ export default function Convert() {
             <select
               value={fromId}
               onChange={e => setFromId(e.target.value)}
-              className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-[#0062db] font-medium"
+              className="w-28 shrink-0 border border-gray-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-[#0062db] font-medium"
             >
               {currencies.map(c => (
                 <option key={c.id} value={c.id}>{c.flag} {c.currency}</option>
@@ -87,7 +87,7 @@ export default function Convert() {
               value={amount}
               onChange={e => setAmount(e.target.value)}
               placeholder="0.00"
-              className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-lg font-bold focus:outline-none focus:border-[#0062db]"
+              className="min-w-0 flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-lg font-bold focus:outline-none focus:border-[#0062db]"
             />
           </div>
           <p className="text-xs text-gray-400 mt-1 pl-1">
@@ -112,13 +112,13 @@ export default function Convert() {
             <select
               value={toId}
               onChange={e => setToId(e.target.value)}
-              className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-[#0062db] font-medium"
+              className="w-28 shrink-0 border border-gray-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-[#0062db] font-medium"
             >
               {currencies.filter(c => c.id !== fromId).map(c => (
                 <option key={c.id} value={c.id}>{c.flag} {c.currency}</option>
               ))}
             </select>
-            <div className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-lg font-bold text-gray-400 bg-gray-50">
+            <div className="min-w-0 flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-lg font-bold text-gray-400 bg-gray-50 truncate">
               {youGet || '0.00'}
             </div>
           </div>

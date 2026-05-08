@@ -137,21 +137,65 @@ export default function Home() {
       </section>
 
       {/* Card snapshot */}
-      <section className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center justify-between cursor-pointer" onClick={() => navigate('/card')}>
-        <div className="flex items-center gap-3">
-          <div
-            className="w-12 h-8 rounded-lg flex flex-col justify-end p-1.5 relative overflow-hidden flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)' }}
-          >
-            <img src={borderlessFavicon} alt="" className="w-3 h-3 object-contain absolute top-1 right-1 opacity-80" />
-            <p className="text-white font-mono text-[6px] tracking-widest opacity-70">•••• {card.last4}</p>
+      <section>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="font-semibold text-gray-800 text-sm">My Card</h2>
+          <button onClick={() => navigate('/card')} className="text-xs text-[#0062db] font-medium flex items-center gap-1">
+            Manage <ChevronRight size={13} />
+          </button>
+        </div>
+
+        <div
+          onClick={() => navigate('/card')}
+          className="cursor-pointer rounded-3xl p-6 text-white flex flex-col justify-between shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}
+        >
+          {/* Row 1: brand + logo */}
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-white/50 text-[11px] font-medium tracking-wide">borderless × credila</p>
+              <p className="text-white/80 text-[11px] mt-0.5">Student Debit Card</p>
+            </div>
+            <img src={borderlessFavicon} alt="Borderless" className="h-7 w-7 object-contain opacity-80" />
           </div>
+
+          {/* Row 2: chip + number */}
           <div>
-            <p className="text-sm font-semibold text-gray-800">Borderless Debit Card</p>
-            <p className="text-xs text-gray-400">•••• {card.last4} · Spent ${card.spentThisMonth} this month</p>
+            <div className="w-9 h-7 rounded-md mb-3 border border-yellow-200/40"
+              style={{ background: 'linear-gradient(135deg, #d4a843 0%, #f0cc6e 40%, #b8902e 100%)' }}
+            >
+              <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-px p-0.5 opacity-60">
+                {Array.from({ length: 9 }).map((_, i) => <div key={i} className="bg-yellow-900/30 rounded-sm" />)}
+              </div>
+            </div>
+            <p className="text-base font-mono tracking-widest">•••• •••• •••• {card.last4}</p>
+          </div>
+
+          {/* Row 3: name + expiry + visa + spend */}
+          <div className="flex justify-between items-end">
+            <div>
+              <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Card Holder</p>
+              <p className="text-sm font-semibold tracking-wider">{card.holder}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-white/50 text-[10px] uppercase tracking-widest mb-0.5">Expires</p>
+              <p className="text-sm font-semibold">{card.expiry}</p>
+            </div>
+            <p className="text-xl font-black italic tracking-tight">VISA</p>
           </div>
         </div>
-        <ChevronRight size={18} className="text-gray-300" />
+
+        {/* Spend summary below card */}
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+            <p className="text-xs text-gray-400 mb-1">Spent this month</p>
+            <p className="text-base font-bold text-gray-800">${card.spentThisMonth}</p>
+          </div>
+          <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+            <p className="text-xs text-gray-400 mb-1">Cashback earned</p>
+            <p className="text-base font-bold text-green-600">${card.cashbackEarned}</p>
+          </div>
+        </div>
       </section>
 
       {/* Recent Transactions */}

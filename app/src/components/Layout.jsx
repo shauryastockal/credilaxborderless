@@ -99,7 +99,7 @@ function Header() {
         <img src={credilaLogo} alt="Credila" className="h-7 w-auto" />
       </div>
 
-      <button className="w-8 h-8 rounded-full bg-[#0062db] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+      <button className="md:hidden w-8 h-8 rounded-full bg-[#0062db] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
         A
       </button>
     </header>

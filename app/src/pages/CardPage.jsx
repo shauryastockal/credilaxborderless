@@ -43,7 +43,7 @@ export default function CardPage() {
         {/* Left col: card + controls */}
         <div className="space-y-4">
           {/* Card Visual */}
-          <div className="relative max-w-sm mx-auto">
+          <div className="relative max-w-sm">
             <div
               className={`rounded-3xl p-6 text-white transition-all duration-300 flex flex-col justify-between ${frozen ? 'opacity-70 grayscale' : ''}`}
               style={{ background: 'linear-gradient(135deg, #0062db 0%, #003d8f 100%)', aspectRatio: '85.6 / 53.98' }}

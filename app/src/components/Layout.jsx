@@ -114,9 +114,13 @@ function Header() {
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-white dark:bg-[#1a1d2e] border-b border-gray-100 dark:border-[#252942] md:border-b-0">
       <div className="flex items-center gap-2.5">
-        <img src={dark ? borderlessLogoDark : borderlessLogo} alt="Borderless" className="h-6 w-auto" />
+        <div className="h-6 w-[66px] flex-shrink-0">
+          <img src={dark ? borderlessLogoDark : borderlessLogo} alt="Borderless" className="h-full w-full object-contain object-left" />
+        </div>
         <div className="w-px h-5 bg-gray-200 dark:bg-[#252942]" />
-        <img src={dark ? credilaLogoDark : credilaLogo} alt="Credila" className="h-7 w-auto" />
+        <div className="h-7 w-[85px] flex-shrink-0">
+          <img src={dark ? credilaLogoDark : credilaLogo} alt="Credila" className="h-full w-full object-contain object-left" />
+        </div>
       </div>
 
       <div className="md:hidden flex items-center gap-2">

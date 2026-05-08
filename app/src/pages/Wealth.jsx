@@ -1,4 +1,4 @@
-import { TrendingUp, Star, Share2, ChevronRight } from 'lucide-react';
+import { TrendingUp, Star, Share2, ChevronRight, Target, Plus } from 'lucide-react';
 import { user, investments, referral } from '../data/dummy';
 
 export default function Wealth() {
@@ -73,6 +73,55 @@ export default function Wealth() {
             ))}
           </ul>
         </div>
+      </div>
+
+      {/* Goal-Based Saving */}
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+            <Target size={16} className="text-purple-500" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-800">Savings Goals</p>
+            <p className="text-xs text-gray-400">Set a target, save automatically</p>
+          </div>
+        </div>
+
+        {/* Sample goal */}
+        <div className="rounded-xl border border-purple-100 bg-purple-50/40 p-4 mb-3">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">✈️</span>
+              <div>
+                <p className="text-sm font-semibold text-gray-800">Trip to Europe</p>
+                <p className="text-xs text-gray-400">Target · Dec 2025</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-purple-600">$340</p>
+              <p className="text-xs text-gray-400">of $1,200</p>
+            </div>
+          </div>
+          <div className="h-2 bg-purple-100 rounded-full overflow-hidden">
+            <div className="h-full bg-purple-500 rounded-full" style={{ width: '28%' }} />
+          </div>
+          <div className="flex justify-between text-xs text-gray-400 mt-1">
+            <span>28% saved</span>
+            <span>$860 to go</span>
+          </div>
+        </div>
+
+        {/* Pitch CTA */}
+        <div className="bg-[#f5f7fa] rounded-xl p-3 mb-3">
+          <p className="text-xs text-gray-600 leading-relaxed">
+            💡 <span className="font-medium text-gray-700">Auto-save while you spend.</span> We round up every transaction and put the difference toward your goal — no effort needed.
+          </p>
+        </div>
+
+        <button className="w-full border border-dashed border-purple-300 text-purple-600 font-semibold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-purple-50 transition-colors">
+          <Plus size={15} />
+          Create a Savings Goal
+        </button>
       </div>
 
       </div>{/* end left col */}
